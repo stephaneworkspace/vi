@@ -10,5 +10,5 @@ git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 mkdir -p ~/.vim/autoload ~/.vim/bundle && \
 	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 python3 -m pip install powerline-status
-cd ~/.vim/bundle/YouCompleteMe
-python3 install.py --clang-completer
+#cd ~/.vim/bundle/YouCompleteMe
+#python3 install.py --clang-completer

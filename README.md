@@ -48,3 +48,8 @@ vi
 :VundleInstall (peut être après plugin install, je changerai, j'ai toujours utilisé celui ci)
 :q
 ````
+et ensuite
+````
+~/.vim/bundle/YouCompleteMe
+python3 install.py --clang-completer
+````
