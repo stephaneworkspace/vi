@@ -5,7 +5,12 @@ https://realpython.com/vim-and-python-a-match-made-in-heaven/
 # Attention
 Ce script écrase par dessus la config de vi sur la machine<br />
 <br />
-donc si vous avez déjà un .vimrc ATTENTION
+Donc si vous avez déjà un .vimrc ATTENTION<br />
+<br />
+Pour putty depuis windows, il faut:
+- Télécharger la font sur https://github.com/powerline/fonts/tree/master/DejaVuSansMono (ou autre ../)<br />
+- La configurer dans putty<br />
+<br />
 
 # Utilisation
 ````
@@ -16,6 +21,7 @@ apt-get install vim
 apt-get install vim-nox
 apt-get install exuberant-ctags
 apt-get install powerline
+apt-get install fonts-powerline
 apt install build-essential cmake python3-dev (or other https://github.com/ycm-core/YouCompleteMe#mac-os-x-super-quick-installation)
 exit
 
