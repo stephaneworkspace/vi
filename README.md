@@ -26,7 +26,7 @@ apt install build-essential cmake python3-dev (or other https://github.com/ycm-c
 exit
 
 vi
-:python import sys; print(sys.version)
+:python3 import sys; print(sys.version)
 (pour vérifier si python est installé)
 
 cd ~/
