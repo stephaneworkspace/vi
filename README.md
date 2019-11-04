@@ -1,23 +1,22 @@
 # Configuration de vi
-Pour le moment je ne recommande pas l'utilisation de ce repository
-
-Car pour le moment je ne l'ai pas encore installé sur plein de shell
-
-Au fur et à mesure je metterai à jour !
-
-Je vous recommande ce lien pour parameterer correctement vi :
+Je vous recommande ce lien pour parameterer correctement :<br />
 https://realpython.com/vim-and-python-a-match-made-in-heaven/
 
 # Attention
-Ce script écrase par dessus la config de vi sur la machine
-
+Ce script écrase par dessus la config de vi sur la machine<br />
+<br />
 donc si vous avez déjà un .vimrc ATTENTION
 
 # Utilisation
+````
 su
 apt-get remove vim-tiny
 apt-get update
 apt-get install vim
+apt-get install vim-nox
+apt-get install exuberant-ctags
+apt-get install powerline
+apt install build-essential cmake python3-dev (or other https://github.com/ycm-core/YouCompleteMe#mac-os-x-super-quick-installation)
 exit
 
 vi
@@ -42,3 +41,4 @@ vi
 :PluginInstall
 :VundleInstall (peut être après plugin install, je changerai, j'ai toujours utilisé celui ci)
 :q
+````
