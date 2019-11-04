@@ -40,6 +40,7 @@ python3 -m pip install powerline-status
 
 Aller dans un répertoire:
 git clone https://github.com/gnachman/iTerm2
+# ATTENTION VIEUX IMAC HIGH SIERRA X CODE QUELQUE CHOSE COMME 10.1 prendre la release 3.2.8
 start XCode
 open the iTerm.xcodeproj
 Click Run
