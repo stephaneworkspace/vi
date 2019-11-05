@@ -15,6 +15,10 @@ pip3 show powerline-status
 vim ~/.bash_profile
 # Paste this code into your .bash_profile
 
+Avant d'aller plus loin je me rappel avoir cp /Users/stephanebressani/Library/Python/3.7/lib/python/site-packages/powerline/config_files/  ~/.config/powerline
+
+ensuite dans l'un ou l'autre il faut aller dans config.json ext.shell-theme -> default to default_left_only pour l'intégration des branches de git
+
 # Powerline
 export PATH="$PATH:/Users/stephanebressani/Library/Python/3.7/lib/python/site-packages/scripts"
 export PATH="$PATH:/Users/stephanebressani/Library/Python/3.7/bin/"
