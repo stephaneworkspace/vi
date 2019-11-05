@@ -3,7 +3,7 @@
 Vérifier que python a un +
 ````
 vim --version
-````
+`````
 Installater vim
 ````
 brew update

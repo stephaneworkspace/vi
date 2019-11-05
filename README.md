@@ -52,4 +52,6 @@ et ensuite
 ````
 ~/.vim/bundle/YouCompleteMe
 python3 install.py --clang-completer
+python3 install.py --all
+
 ````
