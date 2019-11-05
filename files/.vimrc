@@ -152,7 +152,7 @@ set t_Co=256
 set clipboard=unnamed
 
 " Toogle bar
-autocmd FileType c,cpp,python nested :TagbarOpen
+autocmd FileType c,cpp,cs,python nested :TagbarOpen
 let g:tagbar_sort = 0
 nmap <F8> :TagbarToggle<CR>
 
