@@ -166,7 +166,7 @@ nmap <F3> :!clear && echo "Macro F3 -> git diff --name-only" && git diff --name-
 nmap <F4> :!clear && echo "Macro F4 -> git show --stat --oneline HEAD" && git show --stat --oneline HEAD<CR>
 nmap <F5> :!clear && echo "Macro F5 -> git show --stat --oneline HEAD^^..HEAD" && git show --stat --oneline HEAD^^..HEAD<CR>
 nmap <F6> :!clear && echo "Macro F6 -> git add %" && git add %<CR>
-nmap <F7> :!git commit -m <C-R>=input('Macro F7 -> git commit -m -> insérer entre "...":')<CR>
+nmap <F9> :!git commit -m <C-R>=input('Macro F7 -> git commit -m -> insérer entre "...":')<CR>
 
 let &colorcolumn=join(range(81,999),",")
 let &colorcolumn="80,".join(range(400,999),",")

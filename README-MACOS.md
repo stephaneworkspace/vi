@@ -12,6 +12,7 @@ brew install ctags
 brew install cmake
 pip3 install powerline-status
 pip3 show powerline-status
+pip3 install --user flake8
 vim ~/.bash_profile
 # Paste this code into your .bash_profile
 
