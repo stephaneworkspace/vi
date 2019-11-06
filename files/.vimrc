@@ -160,11 +160,12 @@ nmap <F8> :TagbarToggle<CR>
 nmap <F12> :!./run.sh<CR>
 
 " Run git
-nmap <F2> :!git diff <CR>
-nmap <F3> :!git diff --name-only<CR>
-nmap <F4> :!git show --stat --oneline HEAD<CR>
-nmap <F5> :!git show --stat --oneline HEAD^^..HEAD<CR>
-nmap <F6> :!git add %<CR>
+nmap <F2> :!echo "Macro F2 -> git diff" && git diff<CR>
+nmap <F3> :!echo "Macro F3 -> git diff --name-only" && git diff --name-only<CR>
+nmap <F4> :!echo "Macro F4 -> git show --stat --oneline HEAD" && git show --stat --oneline HEAD<CR>
+nmap <F5> :!echo "Macro F5 -> git show --stat --oneline HEAD^^..HEAD" && git show --stat --oneline HEAD^^..HEAD<CR>
+nmap <F6> :!echo "Macro F6 -> git add %" && git add %<CR>
+nmap <F7> :!git commit -m <C-R>=input('Macro F7 -> git commit -m -> insérer entre "...":')<CR>
 
 let &colorcolumn=join(range(81,999),",")
 let &colorcolumn="80,".join(range(400,999),",")
