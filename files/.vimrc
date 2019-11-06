@@ -156,9 +156,6 @@ autocmd FileType c,cpp,cs,python nested :TagbarOpen
 let g:tagbar_sort = 0
 nmap <F8> :TagbarToggle<CR>
 
-" F10 -> Reload file
-nmap <F10> :edit!<CR>
-
 " Run for developement
 nmap <F11> :!./run.sh dev<CR>
 nmap <F12> :!./run.sh<CR>
