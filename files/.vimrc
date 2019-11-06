@@ -160,7 +160,7 @@ nmap <F8> :TagbarToggle<CR>
 nmap <F12> :!./run.sh<CR>
 
 " Run git
-nmap <F2> :!git diff<CR>
+nmap <F2> :!git diff <CR>
 nmap <F3> :!git diff --name-only<CR>
 nmap <F4> :!git show --stat --oneline HEAD<CR>
 nmap <F5> :!git show --stat --oneline HEAD^^..HEAD<CR>
