@@ -15,6 +15,9 @@ Pour putty depuis windows, il faut:
 # Utilisation
 ````
 su
+apt install curl
+apt install python-pip
+apt install python3-pip
 apt-get remove vim-tiny
 apt-get update
 apt-get install vim
@@ -41,11 +44,11 @@ mkdir download
 cd download
 git clone https://github.com/stephaneworkspace/vi.git
 cd vi
-chmod 777 run.sh
+chmod 700 run.sh
 ./run.sh
 vi
 :PluginInstall
-:VundleInstall (peut être après plugin install, je changerai, j'ai toujours utilisé celui ci)
+:VundleInstall (aleternative a :PluginInstall une fois Vundle installé)
 :q
 ````
 et ensuite
@@ -55,3 +58,4 @@ python3 install.py --clang-completer
 python3 install.py --all
 
 ````
+Pour debian et ubuntu desktop, mettre le dossier .vim/bundle dans vim/bundle et changer le .vimrc pour qu'il pointe vers vim et nom pas .vim
