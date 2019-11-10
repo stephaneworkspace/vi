@@ -26,6 +26,10 @@ apt-get install exuberant-ctags
 apt-get install powerline
 apt-get install fonts-powerline
 apt install build-essential cmake python3-dev (or other https://github.com/ycm-core/YouCompleteMe#mac-os-x-super-quick-installation)
+
+ou
+su
+apt install curl python-pip python3-pip exuberant-ctags powerline fonts-powerline build-essential cmake python3-dev
 exit
 
 vi
