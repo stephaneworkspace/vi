@@ -74,6 +74,17 @@ au BufNewFile,BufRead *.cs,*.razor
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
     \ set syntax=html |
+
+au BufNewFile,BufRead *.rst
+    \ set tabstop=3 |
+    \ set softtabstop=3 |
+    \ set shiftwidth=3 |
+
+au BufNewFile,BufRead *.vimrc
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+
 " Flagging Unnecessary Whitespace
 highlight BadWhitespace ctermbg=red guibg=darkred
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
