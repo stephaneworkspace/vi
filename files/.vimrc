@@ -179,5 +179,21 @@ nmap <F5> :!clear && echo "Macro F5 -> git show --stat --oneline HEAD^^..HEAD" &
 nmap <F6> :!clear && echo "Macro F6 -> git add %" && git add %<CR>
 nmap <F9> :!git commit -m <C-R>=input('Macro F9 -> git commit -m -> insérer entre "...":')<CR>
 
+" Remove withespace
+if !exists('*StripTrailingWhitespace')
+    function! StripTrailingWhitespace()
+        if !&binary && &filetype != 'diff'
+            let b:win_view = winsaveview()
+            silent! keepjumps keeppatterns %s/\s\+$//e
+            call winrestview(b:win_view)
+        endif
+    endfunction
+endif
+command! Cls call StripTrailingWhitespace()
+cnoreabbrev cls Cls
+cnoreabbrev StripTrailingSpace Cls
+nnoremap <Leader>s :call StripTrailingWhitespace()
+nmap <F10> :cls<CR>
+
 let &colorcolumn=join(range(81,999),",")
 let &colorcolumn="80,".join(range(400,999),",")
