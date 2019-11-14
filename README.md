@@ -40,6 +40,9 @@ cd ~/
 vi .bashrc
 G (pour aller en fin de ligne)
 o (pour insérer dessous)
+" Vi default editor
+export EDITOR='vi'
+" Powerline
 if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then
         source /usr/share/powerline/bindings/bash/powerline.sh
 fi
