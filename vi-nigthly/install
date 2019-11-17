@@ -1,0 +1,4 @@
+cpp
+./install.py --clang-completer
+
+sudo apt-get install clang-format
