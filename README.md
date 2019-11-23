@@ -25,6 +25,7 @@ apt-get install vim-nox
 apt-get install exuberant-ctags
 apt-get install powerline
 apt-get install fonts-powerline
+apt-get install neofetch
 apt install build-essential cmake python3-dev (or other https://github.com/ycm-core/YouCompleteMe#mac-os-x-super-quick-installation)
 
 ou
@@ -47,6 +48,8 @@ set -o vi # For vi mode in bash
 if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then
         source /usr/share/powerline/bindings/bash/powerline.sh
 fi
+# Neofetch
+neofetch
 :wq (pour quitter et sauver)
 mkdir download
 cd download
