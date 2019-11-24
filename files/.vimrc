@@ -24,6 +24,11 @@ Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'majutsushi/tagbar'
 Plugin 'xolox/vim-easytags'
 Plugin 'xolox/vim-misc'
+Plugin 'dense-analysis/ale'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'rhysd/vim-clang-format'
+" Source the termdebug plugin
+packadd termdebug
 
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
@@ -50,7 +55,7 @@ nnoremap <space> za
 let g:SimpylFold_docstring_preview=1
 
 " Identation
-au BufNewFile,BufRead *.py
+au BufNewFile,BufRead *.py,*.c,*.cpp,*.h,".cc,makefile
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -85,9 +90,14 @@ au BufNewFile,BufRead *.vimrc
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
 
+au BufNewFile,BufRead *.desktop
+	\ set autoindent |
+    \ set fileformat=unix |
+
+
 " Flagging Unnecessary Whitespace
 highlight BadWhitespace ctermbg=red guibg=darkred
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h,*.cs,*.desktop match BadWhitespace /\s\+$/
 
 " UTF-8 Support
 set encoding=utf-8
@@ -168,8 +178,10 @@ let g:tagbar_sort = 0
 nmap <F8> :TagbarToggle<CR>
 
 " Run for developement
-nmap <F11> :!./run.sh dev<CR>
 nmap <F12> :!./run.sh<CR>
+autocmd FileType c nmap <F11> :!make clean && make run<CR>
+autocmd FileType cpp nmap <F11> :!make clean && make run<CR>
+autocmd FileType py nmap <F11> :!./run.sh dev<CR>
 
 " Run git
 nmap <F2> :!clear && echo "Macro F2 -> git diff" && git diff<CR>
@@ -194,6 +206,13 @@ cnoreabbrev cls Cls
 cnoreabbrev StripTrailingSpace Cls
 nnoremap <Leader>s :call StripTrailingWhitespace()
 nmap <F10> :cls<CR>
+
+" Terminal debugger https://www.dannyadam.com/blog/2019/05/debugging-in-vim/
+" Add mapping to load termdebug
+map <C-d> :Termdebug<cr>
+" Add mappings for :Step and :Over
+map <S-s> :Step<cr>
+map <S-o> :Over<cr>
 
 let &colorcolumn=join(range(81,999),",")
 let &colorcolumn="80,".join(range(400,999),",")
