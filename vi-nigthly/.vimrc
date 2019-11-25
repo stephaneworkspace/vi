@@ -56,7 +56,7 @@ nnoremap <space> za
 let g:SimpylFold_docstring_preview=1
 
 " Identation
-au BufNewFile,BufRead *.py,*.c,*.cpp,*.h,*.cc,makefile,*.rs
+au BufNewFile,BufRead *.py,*.c,*.cpp,*.h,*.cc,makefile,*.rs,*.cs
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -65,7 +65,7 @@ au BufNewFile,BufRead *.py,*.c,*.cpp,*.h,*.cc,makefile,*.rs
     \ set autoindent |
     \ set fileformat=unix |
 
-au BufNewFile,BufRead *.MD,*.md
+au BufNewFile,BufRead *.cs
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -73,6 +73,17 @@ au BufNewFile,BufRead *.MD,*.md
     \ set expandtab |
     \ set autoindent |
     \ set fileformat=unix |
+	\ set formatoptions+=t |
+
+au BufNewFile,BufRead *.md,*.MD
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+	\ set filetype=markdown |
+	\ set fileformat=unix |
 
 au BufNewFile,BufRead *.ts
 	\ set tabstop=2 |
@@ -91,7 +102,7 @@ au BufNewFile,BufRead *.yml,*.json
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
 
-au BufNewFile,BufRead *.cs,*.razor
+au BufNewFile,BufRead *.razor
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -114,7 +125,7 @@ au BufNewFile,BufRead *.desktop
 
 " Flagging Unnecessary Whitespace
 highlight BadWhitespace ctermbg=red guibg=darkred
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h,*.cs,*.desktop,*.rs match BadWhitespace /\s\+$/
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h,*.cs,*.desktop,*.rs,*.cs match BadWhitespace /\s\+$/
 
 " UTF-8 Support
 set encoding=utf-8
@@ -200,7 +211,7 @@ autocmd FileType c nmap <F11> :!make clean && make run<CR>
 autocmd FileType cpp nmap <F11> :!make clean && make run<CR>
 autocmd FileType py nmap <F11> :!./run.sh dev<CR>
 autocmd FileType rust nmap <F11> :!cargo run --verbose<CR>
-autocmd FileType conf nmap <F11> :!mdcat % <Bar> more<CR>
+autocmd FileType markdown nmap <F11> :!mdcat % <Bar> more<CR>
 " Run git
 nmap <F2> :!echo "Macro F2 -> git diff" && git diff<CR>
 nmap <F3> :!echo "Macro F3 -> git diff --name-only" && git diff --name-only<CR>
@@ -233,7 +244,7 @@ map <S-s> :Step<cr>
 map <S-§> :Over<cr>
 
 " Goto next
-map <S-g> :YcmCompleter GoTo<CR>
+map <S-t> :YcmCompleter GoTo<CR>
 
 " TypeScript import
 map <C-i> :TsuImport<CR>
@@ -257,4 +268,5 @@ let g:ale_cpp_gcc_options = '-std=c++14 -Wall - < `pkg-config gtkmm-3.0 --cflags
 " linter
 let g:ale_fixer = {
 			\ "rust": ['cargo', 'rls', 'rustc'],
+			\ "cs": ['mcsc'],
 			\ }
