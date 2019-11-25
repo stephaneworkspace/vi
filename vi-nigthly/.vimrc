@@ -65,6 +65,15 @@ au BufNewFile,BufRead *.py,*.c,*.cpp,*.h,*.cc,makefile,*.rs
     \ set autoindent |
     \ set fileformat=unix |
 
+au BufNewFile,BufRead *.MD,*.md
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+
 au BufNewFile,BufRead *.ts
 	\ set tabstop=2 |
 	\ set softtabstop=2 |
@@ -191,6 +200,7 @@ autocmd FileType c nmap <F11> :!make clean && make run<CR>
 autocmd FileType cpp nmap <F11> :!make clean && make run<CR>
 autocmd FileType py nmap <F11> :!./run.sh dev<CR>
 autocmd FileType rust nmap <F11> :!cargo run --verbose<CR>
+autocmd FileType conf nmap <F11> :!mdcat % <Bar> more<CR>
 " Run git
 nmap <F2> :!echo "Macro F2 -> git diff" && git diff<CR>
 nmap <F3> :!echo "Macro F3 -> git diff --name-only" && git diff --name-only<CR>
