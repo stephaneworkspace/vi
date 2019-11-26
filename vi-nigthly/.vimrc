@@ -28,7 +28,8 @@ Plugin 'dense-analysis/ale'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'Quramy/tsuquyomi'
-
+Plugin 'OmniSharp/omnisharp-vim'
+" Plugin 'markwoodhall/vim-nuget' go to definition for c#
 " Source the termdebug plugin
 packadd termdebug
 " add all your plugins here (note older versions of Vundle
@@ -56,7 +57,7 @@ nnoremap <space> za
 let g:SimpylFold_docstring_preview=1
 
 " Identation
-au BufNewFile,BufRead *.py,*.c,*.cpp,*.h,*.cc,makefile,*.rs,*.cs
+au BufNewFile,BufRead *.py,*.c,*.cpp,*.h,*.cc,makefile,*.rs
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -69,11 +70,22 @@ au BufNewFile,BufRead *.cs
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
-    \ set textwidth=79 |
+    \ set textwidth=105 |
     \ set expandtab |
-    \ set autoindent |
+	\ set autoindent |
     \ set fileformat=unix |
 	\ set formatoptions+=t |
+
+au BufNewFile,BufRead *.csproj
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+	\ set autoindent |
+    \ set fileformat=unix |
+	\ set formatoptions+=t |
+
 
 au BufNewFile,BufRead *.md,*.MD
     \ set tabstop=4 |
@@ -159,6 +171,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+" let g:syntastic_cs_checkers = []
 
 " Colors schemes
 if has('gui_running')
@@ -266,7 +279,20 @@ let g:ycm_extra_conf_globlist = ['~/Code/C++/*','!~/*']
 " Ale config for gtk c++ 
 let g:ale_cpp_gcc_options = '-std=c++14 -Wall - < `pkg-config gtkmm-3.0 --cflags --libs`'
 " linter
-let g:ale_fixer = {
+let g:ale_fixers  = {
 			\ "rust": ['cargo', 'rls', 'rustc'],
-			\ "cs": ['mcsc'],
+			\ "cs": ['uncrustify', 'astyle'],
 			\ }
+"			\ "cs": ['mcsc'],
+"			\ }
+"			['OmniSharp'] mcs
+let g:ale_linters = {
+			\ "cs": ['OmniSharp', 'mcsc'],
+			\ }
+let g:OmniSharp_server_stdio = 1
+" let g:OmniSharp_server_use_mono = 1
+" let g:OmniSharp_server_path = '/home/stephane/.vscode/extensions/ms-vscode.csharp-1.21.8/.omnisharp/1.34.8/omnisharp/OmniSharp.exe'
+" let g:OmniSharp_server_path = '/home/stephane/.cache/omnisharp-vim/omnisharp-roslyn/omnisharp/OmniSharp.exe'
+" let g:OmniSharp_server_path = '/home/stephane/.cache/omnisharp-vim/omnisharp-roslyn/run'
+" let g:OmniSharp_highlight_types = 3
+" let g:OmniSharp_start_without_solution = 1let g:formatdef_my_custom_cs = '"astyle --mode=cs --style=ansi -pcHs4"'
