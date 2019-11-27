@@ -31,6 +31,10 @@ Plugin 'rhysd/vim-clang-format'
 Plugin 'OmniSharp/omnisharp-vim'
 " Plugin 'leafgarland/typescript-vim', {'for': ['typescript', 'typescript.tsx']}
 " Plugin 'neoclide/coc.nvim', {'branch': 'release'} " execute :call coc#util#install()
+Plugin 'google/vim-maktaba'
+Plugin 'google/vim-codefmt'
+Plugin 'google/vim-glaive'
+
 packadd termdebug
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
@@ -301,3 +305,11 @@ let g:OmniSharp_server_stdio = 1
 " let g:OmniSharp_highlight_types = 3
 " let g:OmniSharp_start_without_solution = 1let g:formatdef_my_custom_cs = '"astyle --mode=cs --style=ansi -pcHs4"'
 let g:ale_completion_tsserver_autoimport = 1 " don't work
+
+augroup autoformat_settings
+  autocmd FileType javascript,typescript AutoFormatBuffer clang-format
+  autocmd FileType dart AutoFormatBuffer dartfmt
+  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
+  autocmd FileType rust AutoFormatBuffer rustfmt
+  autocmd FileType vue AutoFormatBuffer prettier
+augroup END
