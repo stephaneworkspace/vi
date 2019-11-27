@@ -27,10 +27,10 @@ Plugin 'xolox/vim-misc'
 Plugin 'dense-analysis/ale'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'rhysd/vim-clang-format'
-Plugin 'Quramy/tsuquyomi'
+" Plugin 'Quramy/tsuquyomi' -> don't work
 Plugin 'OmniSharp/omnisharp-vim'
-" Plugin 'markwoodhall/vim-nuget' go to definition for c#
-" Source the termdebug plugin
+" Plugin 'leafgarland/typescript-vim', {'for': ['typescript', 'typescript.tsx']}
+" Plugin 'neoclide/coc.nvim', {'branch': 'release'} " execute :call coc#util#install()
 packadd termdebug
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
@@ -258,6 +258,8 @@ map <S-§> :Over<cr>
 
 " Goto next
 map <S-t> :YcmCompleter GoTo<CR>
+" Fix import
+map <S-f> :YcmCompleter FixIt<CR>
 
 " TypeScript import
 map <C-i> :TsuImport<CR>
@@ -281,13 +283,15 @@ let g:ale_cpp_gcc_options = '-std=c++14 -Wall - < `pkg-config gtkmm-3.0 --cflags
 " linter
 let g:ale_fixers  = {
 			\ "rust": ['cargo', 'rls', 'rustc'],
-			\ "cs": ['uncrustify', 'astyle'],
+			\ "cs": ['uncrustify'],
+			\ "typescript": ['tsserver', 'prettier'],
 			\ }
 "			\ "cs": ['mcsc'],
 "			\ }
-"			['OmniSharp'] mcs
+"			['OmniSharp'] mcs mcsc
 let g:ale_linters = {
-			\ "cs": ['OmniSharp', 'mcsc'],
+			\ "cs": ['OmniSharp'],
+			\ "typescript": ['tslint'],
 			\ }
 let g:OmniSharp_server_stdio = 1
 " let g:OmniSharp_server_use_mono = 1
@@ -296,3 +300,4 @@ let g:OmniSharp_server_stdio = 1
 " let g:OmniSharp_server_path = '/home/stephane/.cache/omnisharp-vim/omnisharp-roslyn/run'
 " let g:OmniSharp_highlight_types = 3
 " let g:OmniSharp_start_without_solution = 1let g:formatdef_my_custom_cs = '"astyle --mode=cs --style=ansi -pcHs4"'
+let g:ale_completion_tsserver_autoimport = 1 " don't work
