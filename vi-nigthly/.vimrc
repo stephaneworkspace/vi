@@ -34,7 +34,7 @@ Plugin 'OmniSharp/omnisharp-vim'
 Plugin 'google/vim-maktaba'
 Plugin 'google/vim-codefmt'
 Plugin 'google/vim-glaive'
-
+Plugin 'HerringtonDarkholme/yats.vim'
 packadd termdebug
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
@@ -108,15 +108,26 @@ au BufNewFile,BufRead *.ts
 	\ set expandtab |
 	\ set fileformat=unix |
 
-au BufNewFile,BufRead *.js,*.html,*.css
+au BufNewFile,BufRead *.js
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2 |
+
+au BufNewFile,BufRead *.html,*.css
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
 
 au BufNewFile,BufRead *.yml,*.json
-    \ set tabstop=4 |
+    \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
+
+au BufNewFile,BufRead .jsbeautifyrc
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2 |
+	\ set filetype=json | 
 
 au BufNewFile,BufRead *.razor
     \ set tabstop=4 |
@@ -217,7 +228,7 @@ set t_Co=256
 set clipboard=unnamed
 
 " Toogle bar
-autocmd FileType c,cpp,cs,python nested :TagbarOpen
+autocmd FileType c,cpp,cs,python,typescript,rust nested :TagbarOpen
 let g:tagbar_sort = 0
 nmap <F8> :TagbarToggle<CR>
 
