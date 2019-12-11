@@ -15,33 +15,13 @@ Pour putty depuis windows, il faut:
 # Utilisation
 ````
 su
-apt install curl
-apt install python-pip
-apt install python3-pip
-apt-get remove vim-tiny
-apt-get update
-apt-get install vim
-apt-get install vim-nox
-apt-get install exuberant-ctags
-apt-get install powerline
-apt-get install fonts-powerline
-apt-get install neofetch
-apt install build-essential cmake python3-dev (or other https://github.com/ycm-core/YouCompleteMe#mac-os-x-super-quick-installation)
-
-ou
-su
-apt install curl python-pip python3-pip exuberant-ctags powerline fonts-powerline build-essential cmake python3-dev
+./run_sudo_before_run_sh.sh
 exit
-
 vi
 :python3 import sys; print(sys.version)
 (pour vérifier si python est installé)
-
 cd ~/
 vi .bashrc
-G (pour aller en fin de ligne)
-o (pour insérer dessous)
-# Vi default editor
 export EDITOR='vi'
 set -o vi # For vi mode in bash
 # Powerline
