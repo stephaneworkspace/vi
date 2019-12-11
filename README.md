@@ -13,40 +13,45 @@ Pour putty depuis windows, il faut:
 <br />
 
 # Utilisation
-````
+* [x] Installer les apt debian
+```
 su
 ./run_sudo_before_run_sh.sh
 exit
+```
+* [x] Vérification que python3 est installé
 vi
 :python3 import sys; print(sys.version)
 (pour vérifier si python est installé)
-cd ~/
-vi .bashrc
+```
+* [x] Configurer bash
+```
+vi ~/.bashrc
+
 export EDITOR='vi'
 set -o vi # For vi mode in bash
+
 # Powerline
 if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then
         source /usr/share/powerline/bindings/bash/powerline.sh
 fi
+
 # Neofetch
 neofetch
-:wq (pour quitter et sauver)
-mkdir download
-cd download
-git clone https://github.com/stephaneworkspace/vi.git
-cd vi
-chmod 700 run.sh
+```
+* [x] Effacer ce repertoire (de config de vi) et lancer la configuration
+```
 ./run.sh
+```
+* [x] Installer les Vundle
 vi
 :PluginInstall
 :VundleInstall (aleternative a :PluginInstall une fois Vundle installé)
-:q
-````
-et ensuite
-````
-~/.vim/bundle/YouCompleteMe
+```
+* [x] Configurer YouCompleteMe
+```
+cd ~/.vim/bundle/YouCompleteMe
 python3 install.py --clang-completer
 python3 install.py --all
-
-````
+```
 Pour debian et ubuntu desktop, mettre le dossier .vim/bundle dans vim/bundle et changer le .vimrc pour qu'il pointe vers vim et nom pas .vim
