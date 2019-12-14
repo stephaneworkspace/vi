@@ -35,6 +35,18 @@ Plugin 'google/vim-maktaba'
 Plugin 'google/vim-codefmt'
 Plugin 'google/vim-glaive'
 Plugin 'HerringtonDarkholme/yats.vim'
+Plugin 'rust-lang/rust.vim'
+Plugin 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'branch': 'release/1.x',
+  \ 'for': [
+    \ 'graphql',
+    \ 'markdown',
+    \ 'vue',
+    \ 'lua',
+    \ 'php',
+    \ 'ruby',
+    \ 'swift' ] }
 packadd termdebug
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
@@ -90,7 +102,6 @@ au BufNewFile,BufRead *.csproj
     \ set fileformat=unix |
 	\ set formatoptions+=t |
 
-
 au BufNewFile,BufRead *.md,*.MD
     \ set tabstop=4 |
     \ set softtabstop=4 |
@@ -101,7 +112,21 @@ au BufNewFile,BufRead *.md,*.MD
 	\ set filetype=markdown |
 	\ set fileformat=unix |
 
-au BufNewFile,BufRead *.ts
+au BufNewFile,BufRead *.ts,*.vue
+	\ set tabstop=2 |
+	\ set softtabstop=2 |
+	\ set shiftwidth=2 |
+	\ set expandtab |
+	\ set fileformat=unix |
+
+au BufNewFile,BufRead *.tex
+	\ set tabstop=2 |
+	\ set softtabstop=2 |
+	\ set shiftwidth=2 |
+	\ set expandtab |
+	\ set fileformat=unix |
+
+au BufNewFile,BufRead *.sql
 	\ set tabstop=2 |
 	\ set softtabstop=2 |
 	\ set shiftwidth=2 |
@@ -140,7 +165,7 @@ au BufNewFile,BufRead *.rst
     \ set softtabstop=3 |
     \ set shiftwidth=3 |
 
-au BufNewFile,BufRead *.vimrc
+au BufNewFile,BufRead *.vimrc,*.conf
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -274,7 +299,9 @@ map <S-§> :Over<cr>
 " Goto next
 map <S-t> :YcmCompleter GoTo<CR>
 " Fix import
-map <S-f> :YcmCompleter FixIt<CR>
+" map <S-f> :YcmCompleter FixIt<CR>
+autocmd FileType typescript,javascript,ts,js nmap <S-f> :YcmCompleter FixIt<CR>
+autocmd FileType cs,csharp nmap <S-f> :%!astyle --mode=cs --style=ansi -pcHs<CR>
 
 " TypeScript import
 map <C-i> :TsuImport<CR>
@@ -301,12 +328,13 @@ let g:ale_fixers  = {
 			\ "cs": ['uncrustify'],
 			\ "typescript": ['tsserver', 'prettier'],
 			\ }
-"			\ "cs": ['mcsc'],
+"			\ "cs": ['mcsc'], uncrustify
 "			\ }
 "			['OmniSharp'] mcs mcsc
 let g:ale_linters = {
 			\ "cs": ['OmniSharp'],
-			\ "typescript": ['tslint'],
+			\ "typescript": ['tslint', 'eslint'],
+			\ "vue": ['eslint'],
 			\ }
 let g:OmniSharp_server_stdio = 1
 " let g:OmniSharp_server_use_mono = 1
@@ -322,5 +350,8 @@ augroup autoformat_settings
   autocmd FileType dart AutoFormatBuffer dartfmt
   autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
   autocmd FileType rust AutoFormatBuffer rustfmt
-  autocmd FileType vue AutoFormatBuffer prettier
+" autocmd FileType vue AutoFormatBuffer prettier
+" autocmd FileType csharp,cs AutoFormatBuffer astyle --mode=cs --style=ansi -pcHs
 augroup END
+
+let g:prettier#config#print_width = 79
