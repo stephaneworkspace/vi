@@ -72,6 +72,8 @@ POWERLEVEL9K_MODE='nerdfont-complete'
 # plugins=(git)
 plugins=(
   brew
+  cargo
+  flutter
   git
   gradle
   ng
@@ -79,6 +81,8 @@ plugins=(
   yarn
   zsh-autosuggestions
   osx
+  rust
+  xcode
   sdkman
 )
 
@@ -124,3 +128,9 @@ if command -v brew >/dev/null 2>&1; then
   # Load rupa's z if installed
   [ -f $(brew --prefix)/etc/profile.d/z.sh ] && source $(brew --prefix)/etc/profile.d/z.sh
 fi
+
+# Neofetch
+neofetch
+
+# Rust
+export RUST_SRC_PATH=${HOME}/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src

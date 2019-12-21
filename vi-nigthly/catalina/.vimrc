@@ -22,7 +22,8 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'kien/ctrlp.vim'
 "Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-Plugin 'romkatv/powerlevel10k'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'majutsushi/tagbar'
 Plugin 'xolox/vim-easytags'
 Plugin 'xolox/vim-misc'
@@ -49,6 +50,10 @@ Plugin 'prettier/vim-prettier', {
     \ 'php',
     \ 'ruby',
     \ 'swift' ] }
+Plugin 'racer-rust/vim-racer'
+Plugin 'dart-lang/dart-vim-plugin'
+Plugin 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'} " And then :call coc#util#install()
+"       CocInstall coc-flutter (with :)
 packadd termdebug
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
@@ -115,6 +120,13 @@ au BufNewFile,BufRead *.md,*.MD
 	\ set fileformat=unix |
 
 au BufNewFile,BufRead *.ts,*.vue
+	\ set tabstop=2 |
+	\ set softtabstop=2 |
+	\ set shiftwidth=2 |
+	\ set expandtab |
+	\ set fileformat=unix |
+
+au BufNewFile,BufRead *.dart
 	\ set tabstop=2 |
 	\ set softtabstop=2 |
 	\ set shiftwidth=2 |
@@ -267,6 +279,7 @@ autocmd FileType cpp nmap <F11> :!make clean && make run<CR>
 autocmd FileType py nmap <F11> :!./run.sh dev<CR>
 autocmd FileType rust nmap <F11> :!cargo run --verbose<CR>
 autocmd FileType markdown nmap <F11> :!mdcat % <Bar> more<CR>
+autocmd FileType dart nmap <F11>: !flutter run<CR>
 " Run git
 nmap <F2> :!echo "Macro F2 -> git diff" && git diff<CR>
 nmap <F3> :!echo "Macro F3 -> git diff --name-only" && git diff --name-only<CR>
@@ -328,6 +341,7 @@ let g:ale_cpp_gcc_options = '-std=c++14 -Wall - < `pkg-config gtkmm-3.0 --cflags
 let g:ale_fixers  = {
 			\ "rust": ['cargo', 'rls', 'rustc'],
 			\ "cs": ['uncrustify'],
+			\ "dart": ['dartfmt'],
 			\ "typescript": ['tsserver', 'prettier'],
 			\ }
 "			\ "cs": ['mcsc'], uncrustify
@@ -352,8 +366,13 @@ augroup autoformat_settings
   autocmd FileType dart AutoFormatBuffer dartfmt
   autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
   autocmd FileType rust AutoFormatBuffer rustfmt
-" autocmd FileType vue AutoFormatBuffer prettier
+  autocmd FileType vue AutoFormatBuffer prettier
 " autocmd FileType csharp,cs AutoFormatBuffer astyle --mode=cs --style=ansi -pcHs
 augroup END
 
 let g:prettier#config#print_width = 79
+" Osx
+let g:airline_powerline_fonts = 1
+let g:airline_theme = "powerlineish"
+" Use coc insade
+let g:loaded_syntastic_dart_dartanalyzer_checker = 0
