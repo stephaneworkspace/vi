@@ -308,7 +308,7 @@ nmap <F10> :cls<CR>
 " Add mapping to load termdebug
 map <C-d> :Termdebug<cr>
 " Add mappings for :Step and :Over
-map <S-s> :Step<cr>
+"map <S-s> :Step<cr>
 map <S-§> :Over<cr>
 
 " Goto next
