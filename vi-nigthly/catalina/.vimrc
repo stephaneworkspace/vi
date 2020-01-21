@@ -54,6 +54,7 @@ Plugin 'racer-rust/vim-racer'
 Plugin 'dart-lang/dart-vim-plugin'
 Plugin 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'} " And then :call coc#util#install()
 "       CocInstall coc-flutter (with :)
+"       CocInstall coc-rls
 packadd termdebug
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
@@ -226,7 +227,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 " let g:syntastic_cs_checkers = []
-
+" let g:syntastic_rust_checkers = []
 " Colors schemes
 if has('gui_running')
   set background=dark
@@ -376,3 +377,15 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme = "powerlineish"
 " Use coc insade
 let g:loaded_syntastic_dart_dartanalyzer_checker = 0
+
+" disable ycm
+let g:loaded_youcompleteme = 1
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
