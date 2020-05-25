@@ -2,6 +2,8 @@ set nocompatible              " required
 set backspace=indent,eol,start
 filetype off                  " required
 
+xnoremap p pgvy
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -55,6 +57,7 @@ Plugin 'dart-lang/dart-vim-plugin'
 Plugin 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'} " And then :call coc#util#install()
 "       CocInstall coc-flutter (with :)
 "       CocInstall coc-rls
+Plugin 'ap/vim-css-color'
 packadd termdebug
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
