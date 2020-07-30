@@ -52,12 +52,15 @@ Plugin 'prettier/vim-prettier', {
     \ 'php',
     \ 'ruby',
     \ 'swift' ] }
-Plugin 'racer-rust/vim-racer'
+"Plugin 'racer-rust/vim-racer'
 Plugin 'dart-lang/dart-vim-plugin'
 Plugin 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'} " And then :call coc#util#install()
 "       CocInstall coc-flutter (with :)
 "       CocInstall coc-rls
 Plugin 'ap/vim-css-color'
+Plugin 'ebfe/vim-racer' 
+" This plugin work fine and vim is faster, for autocompl: Ctrl + X & Ctrl + O
+"                                          for jumpto def: gd
 packadd termdebug
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
@@ -67,6 +70,14 @@ packadd termdebug
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
+
+" racer
+"set hidden
+"let g:racer_cmd = "/Users/stephanebressani/.cargo/bin/racer"
+"let g:racer_cmd = "/Users/stephanebressani/.vim/bundle/vim-racer/"
+"set omnifunc=syntaxcomplete#Complete
+"let g:racer_experimental_completer = 1
+"let g:racer_insert_paren = 1
 
 "split navigations
 nnoremap <C-J> <C-W><C-J>
@@ -392,3 +403,4 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+
