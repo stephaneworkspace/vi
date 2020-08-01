@@ -58,7 +58,7 @@ Plugin 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'} " And then 
 "       CocInstall coc-flutter (with :)
 "       CocInstall coc-rls
 Plugin 'ap/vim-css-color'
-Plugin 'ebfe/vim-racer' 
+"Plugin 'ebfe/vim-racer' 
 " This plugin work fine and vim is faster, for autocompl: Ctrl + X & Ctrl + O
 "                                          for jumpto def: gd
 packadd termdebug
