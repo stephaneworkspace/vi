@@ -1,3 +1,11 @@
+export ZSH_DISABLE_COMPFIX=true;
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -83,7 +91,7 @@ plugins=(
   osx
   rust
   xcode
-  sdkman
+#  sdkman
 )
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor root line)
@@ -91,6 +99,7 @@ ZSH_HIGHLIGHT_PATTERNS=('rm -rf *' 'fg=white,bold,bg=red')
 
 alias x="exit"
 alias hc="history -c"
+alias ls="lsd"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -129,8 +138,16 @@ if command -v brew >/dev/null 2>&1; then
   [ -f $(brew --prefix)/etc/profile.d/z.sh ] && source $(brew --prefix)/etc/profile.d/z.sh
 fi
 
+# Vim mode
+bindkey -v
+
 # Neofetch
 neofetch
+/Users/stephanebressani/Code/Rust/esbat/moon.sh
 
 # Rust
 export RUST_SRC_PATH=${HOME}/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src
+# Flutter
+export PATH="$PATH:${HOME}/Code/Development/flutter/bin"
+export DEP_OPENSSL_INCLUDE=$(brew --prefix openssl)/include
+export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig"
