@@ -1,0 +1,8 @@
+--kinddef-cobol=r,jjr,jjr
+--kinddef-cobol=c,call,call
+--regex-cobol=/(.*)CALL (.*)*/\2/c,call,call/
+--regex-cobol=/^[ ]{6}\*\*\*\*f\*[ \t](.*)*/\1/r,jjr,jjr/
+--regex-cobol=/^[ ]{6}\*\*\*\*h\*[ \t](.*)*/\1/r,jjr,jjr/
+--regex-cobol=/^[ ]{6}\*\*\*\*if\*[ \t](.*)*/\1/r,jjr,jjr/
+--regex-cobol=/^[ ]{6}(.*)>>>>(.*)*/\2/s,section,sections/
+--regex-cobol=/^[ ]{6}(.*)>>>>[ \t](.*)*/\2/s,section,sections/

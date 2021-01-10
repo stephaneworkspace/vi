@@ -1,0 +1,19 @@
+Dans chocolatry, installer vim, ce qui install gvim et permet l'utilisation de la souris sous windows.
+
+Macros:
+
+gd ->      GO TO SECTION.
+g9 ->      GO TO COPY FILE VARIABLE
+g0 ->      GO TO COPY FILE SECTION.
+g8 ->      GO TO MACRO
+g7 ->      GO TO WORD.cbl
+c0 ->      COMPILE
+gt ->      GO TO BWD
+gf ->      GO TO FWD
+
+En cas de :
+^M
+:e ++ff=dos
+
+REMPLACE ALL
+:%s/SEARCH/REMPLACE

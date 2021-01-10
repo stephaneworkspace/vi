@@ -1,0 +1,36 @@
+Dans chocolatry, installer vim, ce qui installe gvim et permet l'utilisation de la souris sous windows.
+
+git clone https://github.com/gmarik/Vundle.vim.git vim\bundle\Vundle.vim
+
+ouvrir vim
+
+:BundleInstall
+
+quitter
+
+et ouvrir vim
+
+:VundleInstall
+
+Il faut avoir installé nodes.js pour certain modules sinon il y a des messages d'erreurs.
+
+Commandes:
+
+gd ->      GO TO SECTION.
+g9 ->      GO TO COPY FILE VARIABLE
+g0 ->      GO TO COPY FILE SECTION.
+g8 ->      GO TO MACRO
+g7 ->      GO TO WORD.cbl
+c0 ->      COMPILE DANS FENETRE EN BAS
+gt ->      GO TO BWD
+gf ->      GO TO FWD
+ce ->      ANALYSE STRUCTURE COBOL DANS FENETRE EN BAS
+F4 ->      RECHERCHE DANS FENETRE EN BAS
+F3 ->      SUIVANT
+
+En cas de :
+^M
+:e ++ff=dos
+
+REMPLACE ALL
+:%s/SEARCH/REMPLACE

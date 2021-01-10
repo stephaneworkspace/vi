@@ -1,0 +1,2 @@
+Note sure if is the good in .vimrc:
+https://gist.github.com/ghostylee/3741473
