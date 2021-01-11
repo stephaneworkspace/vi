@@ -1,232 +1,239 @@
-" Vim syntax file
-" Language: COBOL
-" Maintainers: Davyd Ondrejko
-" (formerly Sitaram Chamarty
-" James Mitchell
-" Last change: 2001 Sep 02
+" Vim indent file
+" Language:	cobol
+" Maintainer: Ankit Jain <ajatkj@yahoo.co.in>
+"     (formerly Tim Pope <vimNOSPAM@tpope.info>)
+"     update Stéphane Bressani <s.bressani@bluewin.ch>
+" $Id: cobol.vim,v 1.1 2007/05/05 18:08:19 vimboss Exp $
+" Last Update:	By Ankit Jain on 22.03.2019
+" Ankit Jain      22.03.2019     Changes & fixes:
+"                                Allow chars in 1st 6 columns
+"                                #C22032019
+"                                
+"                                Stéphane Bressani change:
+"
+"                                EVALUATE
+"                                	WHEN
+"
+"                                => NO
+"
+"                                EVALUATE
+"                                WHEN
+"
+"                                => YES
 
-" For version 5.x: Clear all syntax items
-" For version 6.x: Quit when a syntax file was already loaded
+if exists("b:did_indent")
+    finish
+endif
+let b:did_indent = 1
 
-" Stephen Gennard
-" - added keywords - AS, REPOSITORY
-" - added extra cobolCall bits
+setlocal expandtab
+setlocal indentexpr=GetCobolIndent(v:lnum)
+setlocal indentkeys&
+setlocal indentkeys+=0<*>,0/,0$,0=01,=~division,=~section,0=~end,0=~then,0=~else,0=~when,*<Return>,.
 
-if version < 600
-  syntax clear
-elseif exists("b:current_syntax")
-  finish
+" Only define the function once.
+if exists("*GetCobolIndent")
+    finish
 endif
 
-" MOST important - else most of the keywords wont work!
-if version < 600
-  set isk=@,48-57,-
-else
-  setlocal isk=@,48-57,-
-endif
+let s:skip = 'getline(".") =~ "^.\\{6\\}[*/$-]\\|\"[^\"]*\""'
 
-syn case ignore
+function! s:prevgood(lnum)
+    " Find a non-blank line above the current line.
+    " Skip over comments.
+    let lnum = a:lnum
+    while lnum > 0
+        let lnum = prevnonblank(lnum - 1)
+        let line = getline(lnum)
+        if line !~? '^\s*[*/$-]' && line !~? '^.\{6\}[*/$CD-]'
+            break
+        endif
+    endwhile
+    return lnum
+endfunction
 
-if exists("cobol_legacy_code")
-  syn match cobolKeys "^\a\{1,6\}" contains=cobolReserved
-else
-  syn match cobolKeys "" contains=cobolReserved
-endif
+function! s:stripped(lnum)
+    return substitute(strpart(getline(a:lnum),0,72),'^\s*','','')
+endfunction
 
-syn keyword cobolReserved contained ACCEPT ACCESS ADD ADDRESS ADVANCING AFTER ALPHABET ALPHABETIC
-syn keyword cobolReserved contained ALPHABETIC-LOWER ALPHABETIC-UPPER ALPHANUMERIC ALPHANUMERIC-EDITED ALS
-syn keyword cobolReserved contained ALTERNATE AND ANY ARE AREA AREAS ASCENDING ASSIGN AT AUTHOR BEFORE BINARY
-syn keyword cobolReserved contained BLANK BLOCK BOTTOM BY CANCEL CBLL CD CF CH CHARACTER CHARACTERS CLASS
-syn keyword cobolReserved contained CLOCK-UNITS CLOSE COBOL CODE CODE-SET COLLATING COLUMN COMMA COMMON
-syn keyword cobolReserved contained COMMUNICATIONS COMPUTATIONAL COMPUTE CONFIGURATION CONTENT CONTINUE
-syn keyword cobolReserved contained CONTROL CONVERTING CORR CORRESPONDING COUNT CURRENCY DATA DATE DATE-COMPILED
-syn keyword cobolReserved contained DATE-WRITTEN DAY DAY-OF-WEEK DE DEBUG-CONTENTS DEBUG-ITEM DEBUG-LINE
-syn keyword cobolReserved contained DEBUG-NAME DEBUG-SUB-1 DEBUG-SUB-2 DEBUG-SUB-3 DEBUGGING DECIMAL-POINT
-syn keyword cobolReserved contained DELARATIVES DELETE DELIMITED DELIMITER DEPENDING DESCENDING DESTINATION
-syn keyword cobolReserved contained DETAIL DISABLE DISPLAY DIVIDE DIVISION DOWN DUPLICATES DYNAMIC EGI ELSE EMI
-syn keyword cobolReserved contained ENABLE END-ADD END-COMPUTE END-DELETE END-DIVIDE END-EVALUATE END-IF
-syn keyword cobolReserved contained END-MULTIPLY END-OF-PAGE END-PERFORM END-READ END-RECEIVE END-RETURN
-syn keyword cobolReserved contained END-REWRITE END-SEARCH END-START END-STRING END-SUBTRACT END-UNSTRING
-syn keyword cobolReserved contained END-WRITE ENVIRONMENT EQUAL ERROR ESI EVALUATE EVERY EXCEPTION
-syn keyword cobolReserved contained EXTEND EXTERNAL FALSE FD FILE FILE-CONTROL FILLER FINAL FIRST FOOTING FOR FROM
-syn keyword cobolReserved contained GENERATE GIVING GLOBAL GREATER GROUP HEADING HIGH-VALUE HIGH-VALUES I-O
-syn keyword cobolReserved contained I-O-CONTROL IDENTIFICATION IN INDEX INDEXED INDICATE INITIAL INITIALIZE
-syn keyword cobolReserved contained INITIATE INPUT INPUT-OUTPUT INSPECT INSTALLATION INTO IS JUST
-syn keyword cobolReserved contained JUSTIFIED KEY LABEL LAST LEADING LEFT LENGTH LOCK MEMORY
-syn keyword cobolReserved contained MERGE MESSAGE MODE MODULES MOVE MULTIPLE MULTIPLY NATIVE NEGATIVE NEXT NO NOT
-syn keyword cobolReserved contained NUMBER NUMERIC NUMERIC-EDITED OBJECT-COMPUTER OCCURS OF OFF OMITTED ON OPEN
-syn keyword cobolReserved contained OPTIONAL OR ORDER ORGANIZATION OTHER OUTPUT OVERFLOW PACKED-DECIMAL PADDING
-syn keyword cobolReserved contained PAGE PAGE-COUNTER PERFORM PF PH PIC PICTURE PLUS POSITION POSITIVE
-syn keyword cobolReserved contained PRINTING PROCEDURE PROCEDURES PROCEDD PROGRAM PROGRAM-ID PURGE QUEUE QUOTES
-syn keyword cobolReserved contained RANDOM RD READ RECEIVE RECORD RECORDS REDEFINES REEL REFERENCE REFERENCES
-syn keyword cobolReserved contained RELATIVE RELEASE REMAINDER REMOVAL REPLACE REPLACING REPORT REPORTING
-syn keyword cobolReserved contained REPORTS RERUN RESERVE RESET RETURN RETURNING REVERSED REWIND REWRITE RF RH
-syn keyword cobolReserved contained RIGHT ROUNDED SAME SD SEARCH SECTION SECURITY SEGMENT SEGMENT-LIMITED
-syn keyword cobolReserved contained SELECT SEND SENTENCE SEPARATE SEQUENCE SEQUENTIAL SET SIGN SIZE SORT
-syn keyword cobolReserved contained SORT-MERGE SOURCE SOURCE-COMPUTER SPECIAL-NAMES STANDARD
-syn keyword cobolReserved contained STANDARD-1 STANDARD-2 START STATUS STRING SUB-QUEUE-1 SUB-QUEUE-2
-syn keyword cobolReserved contained SUB-QUEUE-3 SUBTRACT SUM SUPPRESS SYMBOLIC SYNC SYNCHRONIZED TABLE TALLYING
-syn keyword cobolReserved contained TAPE TERMINAL TERMINATE TEST TEXT THAN THEN THROUGH THRU TIME TIMES TO TOP
-syn keyword cobolReserved contained TRAILING TRUE TYPE UNIT UNSTRING UNTIL UP UPON USAGE USE USING VALUE VALUES
-syn keyword cobolReserved contained VARYING WHEN WITH WORDS WORKING-STORAGE WRITE
+function! s:optionalblock(lnum,ind,blocks,clauses)
+    let ind = a:ind
+    let clauses = '\c\<\%(\<NOT\s\+\)\@<!\%(NOT\s\+\)\=\%('.a:clauses.'\)'
+    let begin = '\c-\@<!\<\%('.a:blocks.'\)\>'
+    let beginfull = begin.'\ze.*\%(\n\%(\s*\%([*/$-].*\)\=\n\)*\)\=\s*\%('.clauses.'\)'
+    let end   = '\c\<end-\%('.a:blocks.'\)\>\|\%(\.\%( \|$\)\)\@='
+    let cline = s:stripped(a:lnum)
+    let line  = s:stripped(s:prevgood(a:lnum))
+    if cline =~? clauses "&& line !~? '^search\>'
+        call cursor(a:lnum,1)
+        let lastclause = searchpair(beginfull,clauses,end,'bWr',s:skip)
+        if getline(lastclause) =~? clauses && s:stripped(lastclause) !~? '^'.begin
+            let ind = indent(lastclause)
+        elseif lastclause > 0
+            let ind = indent(lastclause) + shiftwidth()
+            "let ind = ind + shiftwidth()
+        endif
+    elseif line =~? clauses && cline !~? end
+        let ind = ind + shiftwidth()
+    endif
+    return ind
+endfunction
 
-" new
-syn keyword cobolReserved contained AS LOCAL-STORAGE LINKAGE SCREEN ENTRY
-
-" new
-syn keyword cobolReserved contained environment-name environment-value argument-number
-syn keyword cobolReserved contained call-convention identified pointer
-
-syn keyword cobolReserved contained external-form division wait national
-
-" new -- oo stuff
-syn keyword cobolReserved contained repository object class method-id method object static
-syn keyword cobolReserved contained class-id class-control private inherits object-storage
-syn keyword cobolReserved contained class-object protected delegate
-syn keyword cobolReserved contained try catch raise end-try super property
-syn keyword cobolReserved contained override instance equals
-
-" new RM COBOL
-syn keyword cobolReserved contained PREVIOUS
-
-" new - new types
-syn match cobolTypes "condition-value"hs=s,he=e
-syn match cobolTypes "binary-long"hs=s,he=e
-syn match cobolTypes "binary-short"hs=s,he=e
-syn match cobolTypes "binary-double"hs=s,he=e
-syn match cobolTypes "procedure-pointer"hs=s,he=e
-syn match cobolTypes "object reference"hs=s,he=e
-
-syn match cobolReserved contained "\<CONTAINS\>"
-syn match cobolReserved contained "\<\(IF\|ELSE|INVALID\|END\|EOP\)\>"
-syn match cobolReserved contained "\<ALL\>"
-
-syn keyword cobolConstant SPACE SPACES NULL ZERO ZEROES ZEROS LOW-VALUE LOW-VALUES
-
-if exists("cobol_legacy_code")
-  syn match cobolMarker "^.\{6\}"
-  syn match cobolBadLine "^.\{6\}[^ D\-*$/].*"hs=s+6
-  " If comment mark somehow gets into column past Column 7.
-  syn match cobolBadLine "^.\{6\}\s\+\*.*"
-endif
-
-syn match cobolNumber "\<-\=\d*\.\=\d\+\>" contains=cobolMarker,cobolComment
-syn match cobolPic "\<S*9\+\>" contains=cobolMarker,cobolComment
-syn match cobolPic "\<$*\.\=9\+\>" contains=cobolMarker,cobolComment
-syn match cobolPic "\<Z*\.\=9\+\>" contains=cobolMarker,cobolComment
-syn match cobolPic "\<V9\+\>" contains=cobolMarker,cobolComment
-syn match cobolPic "\<9\+V\>" contains=cobolMarker,cobolComment
-syn match cobolPic "\<-\+[Z9]\+\>" contains=cobolMarker,cobolComment
-syn match cobolTodo "todo" contained
-
-if exists("cobol_mf_syntax")
-  syn region cobolComment start="*>" end="$" contains=cobolTodo,cobolMarker
-endif
-
-syn keyword cobolGoTo GO GOTO
-syn keyword cobolCopy COPY
-
-" cobolBAD: things that are BAD NEWS!
-syn keyword cobolBAD ALTER ENTER RENAMES
-
-" cobolWatch: things that are important when trying to understand a program
-syn keyword cobolWatch OCCURS DEPENDING VARYING BINARY COMP REDEFINES
-syn keyword cobolWatch REPLACING THROW
-syn match cobolWatch "COMP-[123456XN]"
-
-syn region cobolEXECs contains=cobolLine start="EXEC " end="END-EXEC"
-
-syn match cobolComment "^.\{6\}\*.*"hs=s+6 contains=cobolTodo,cobolMarker
-syn match cobolComment "^.\{6\}/.*"hs=s+6 contains=cobolTodo,cobolMarker
-syn match cobolComment "^.\{6\}C.*"hs=s+6 contains=cobolTodo,cobolMarker
-
-if exists("cobol_legacy_code")
-  syn match cobolCompiler "^.\{6\}$.*"hs=s+6
-  syn match cobolDecl "^.\{6} \{1,8}\(0\=1\|77\|78\) "hs=s+7,he=e-1 contains=cobolMarker
-  syn match cobolDecl "^.\{6} \+[1-8]\d "hs=s+7,he=e-1 contains=cobolMarker
-  syn match cobolDecl "^.\{6} \+0\=[2-9] "hs=s+7,he=e-1 contains=cobolMarker
-  syn match cobolDecl "^.\{6} \+66 "hs=s+7,he=e-1 contains=cobolMarker
-  syn match cobolWatch "^.\{6} \+88 "hs=s+7,he=e-1 contains=cobolMarker
-else
-  syn match cobolWhiteSpace "^*[ \t]"
-  syn match cobolCompiler "$.*"hs=s,he=e contains=cobolWhiteSpace,cobolTypes
-  syn match cobolDecl "0\=[1-9] *$"hs=s,he=e-1 contains=cobolWhiteSpace,cobolTypes
-  syn match cobolDecl "66 *$"hs=s,he=e-1 contains=cobolWhiteSpace,cobolTypes
-  syn match cobolWatch "88 *$"hs=s,he=e-1 contains=cobolWhiteSpace,cobolTypes
-endif
-
-syn match cobolBadID "\k\+-\($\|[^-A-Z0-9]\)"
-
-syn keyword cobolCALLs CALL CANCEL GOBACK INVOKE PERFORM END-PERFORM END-CALL RUN
-syn match cobolCALLs "STOP \+RUN"
-syn match cobolCALLs "EXIT \+PROGRAM"
-syn match cobolCALLs "EXIT \+PROGRAM \+RETURNING"
-syn match cobolCALLs "EXIT \+PERFORM"
-syn match cobolCALLs "EXIT \+METHOD"
-syn match cobolCALLs "EXIT \+SECTION"
-syn match cobolCALLs "STOP " contains=cobolString
-
-syn match cobolExtras /\<VALUE \+\d\+\./hs=s+6,he=e-1
-
-" zero terminated strings eg: pic x(10) value z"My C String"
-if exists("cobol_mf_syntax")
-  syn match cobolString /z"[^"]*\("\|$\)/
-endif
-
-syn match cobolString /"[^"]*\("\|$\)/
-syn match cobolString /'[^']*\('\|$\)/
-
-if exists("cobol_legacy_code")
-  syn region cobolCondFlow contains=ALLBUT,cobolLine start="\<\(IF\|INVALID\|END\|EOP\)\>" skip=/\('\|"\)[^"]\{-}\("\|'\|$\)/ end="\." keepend
-  syn region cobolLine start="^.\{6} " end="$" contains=ALL
-endif
-
-if exists("cobol_legacy_code")
-  " catch junk in columns 1-6 for modern code
-  syn match cobolBAD "^ \{0,5\}[^ ].*"
-endif
-
-" many legacy sources have junk in columns 1-6: must be before others
-" Stuff after column 72 is in error - must be after all other "match" entries
-if exists("cobol_legacy_code")
-  syn match cobolBadLine "^.\{6}[^*/].\{66,\}"
-endif
-
-" Define the default highlighting.
-" For version 5.7 and earlier: only when not done already
-" For version 5.8 and later: only when an item doesn't have highlighting yet
-if version >= 508 || !exists("did_cobol_syntax_inits")
-  if version < 508
-    let did_cobol_syntax_inits = 1
-    command -nargs=+ HiLink hi link <args>
-  else
-    command -nargs=+ HiLink hi def link <args>
-  endif
-  HiLink cobolBAD Error
-  HiLink cobolBadID Error
-  HiLink cobolBadLine Error
-  HiLink cobolMarker Comment
-  HiLink cobolCALLs Function
-  HiLink cobolComment Comment
-  HiLink cobolKeys Comment
-  HiLink cobolCompiler PreProc
-  HiLink cobolEXECs PreProc
-  HiLink cobolCondFlow Special
-  HiLink cobolCopy PreProc
-  HiLink cobolDecl Type
-  HiLink cobolTypes Type
-  HiLink cobolExtras Special
-  HiLink cobolGoTo Special
-  HiLink cobolConstant Constant
-  HiLink cobolNumber Constant
-  HiLink cobolPic Constant
-  HiLink cobolReserved Statement
-  HiLink cobolString Constant
-  HiLink cobolTodo Todo
-  HiLink cobolWatch Special
-  delcommand HiLink
-endif
-
-let b:current_syntax = "cobol"
-
-vim: ts=6 nowrap
+function! GetCobolIndent(lnum) abort
+    let minshft = 6
+    let ashft = minshft + 1
+    let bshft = ashft + 4
+    " (Obsolete) numbered lines
+    " #C22032019: Columns 1-6 could have alphabets as well as numbers
+    "if getline(a:lnum) =~? '^\s*\d\{6\}\%($\|[ */$CD-]\)'
+    if getline(a:lnum) =~? '^\s*[a-zA-Z0-9]\{6\}\%($\|[ */$CD-]\)'
+        return 0
+    endif
+    let cline = s:stripped(a:lnum)
+    " Comments, etc. must start in the 7th column
+    if cline =~? '^[*/$-]'
+        return minshft
+    elseif cline =~# '^[CD]' && indent(a:lnum) == minshft
+        return minshft
+    endif
+    " Divisions, sections, and file descriptions start in area A
+    if cline =~? '\<\(DIVISION\|SECTION\)\%($\|\.\)' || cline =~? '^[FS]D\>'
+        return ashft
+    endif
+    " Fields
+    if cline =~? '^0*\(1\|77\)\>'
+        return ashft
+    endif
+    if cline =~? '^\d\+\>'
+        let cnum = matchstr(cline,'^\d\+\>')
+        let default = 0
+        let step = -1
+        while step < 2
+        let lnum = a:lnum
+        while lnum > 0 && lnum < line('$') && lnum > a:lnum - 500 && lnum < a:lnum + 500
+            let lnum = step > 0 ? nextnonblank(lnum + step) : prevnonblank(lnum + step)
+            let line = getline(lnum)
+            let lindent = indent(lnum)
+            if line =~? '^\s*\d\+\>'
+                let num = matchstr(line,'^\s*\zs\d\+\>')
+                if 0+cnum == num
+                    return lindent
+                elseif 0+cnum > num && default < lindent + shiftwidth()
+                    let default = lindent + shiftwidth()
+                endif
+            elseif lindent < bshft && lindent >= ashft
+                break
+            endif
+        endwhile
+        let step = step + 2
+        endwhile
+        return default ? default : bshft
+    endif
+    let lnum = s:prevgood(a:lnum)
+    " Hit the start of the file, use "zero" indent.
+    if lnum == 0
+        return ashft
+    endif
+    " Initial spaces are ignored
+    let line = s:stripped(lnum)
+    let ind = indent(lnum)
+    " Paragraphs.  There may be some false positives.
+    if cline =~? '^\(\a[A-Z0-9-]*[A-Z0-9]\|\d[A-Z0-9-]*\a\)\.' "\s*$'
+        if cline !~? '^EXIT\s*\.' && line =~? '\.\s*$'
+            return ashft
+        endif
+    endif
+    " Paragraphs in the identification division.
+    "if cline =~? '^\(PROGRAM-ID\|AUTHOR\|INSTALLATION\|' .
+                "\ 'DATE-WRITTEN\|DATE-COMPILED\|SECURITY\)\>'
+        "return ashft
+    "endif
+    if line =~? '\.$'
+        " XXX
+        return bshft
+    endif
+    if line =~? '^PERFORM\>'
+        let perfline = substitute(line, '\c^PERFORM\s*', "", "")
+        if perfline =~? '^\%(\k\+\s\+TIMES\)\=\s*$'
+            let ind = ind + shiftwidth()
+        elseif perfline =~? '^\%(WITH\s\+TEST\|VARYING\|UNTIL\)\>.*[^.]$'
+            let ind = ind + shiftwidth()
+        endif
+    endif
+    if line =~? '^\%(IF\|THEN\|ELSE\|READ\|SEARCH\|SELECT\)\>'
+        let ind = ind + shiftwidth()
+    endif
+    if line =~? '^\%(EVALUATE\)\>'
+        " let ind = ind + shiftwidth()
+    endif
+    let ind = s:optionalblock(a:lnum,ind,'ADD\|COMPUTE\|DIVIDE\|MULTIPLY\|SUBTRACT','ON\s\+SIZE\s\+ERROR')
+    let ind = s:optionalblock(a:lnum,ind,'STRING\|UNSTRING\|ACCEPT\|DISPLAY\|CALL','ON\s\+OVERFLOW\|ON\s\+EXCEPTION')
+    if cline !~? '^AT\s\+END\>' || line !~? '^SEARCH\>'
+        let ind = s:optionalblock(a:lnum,ind,'DELETE\|REWRITE\|START\|WRITE\|READ','INVALID\s\+KEY\|AT\s\+END\|NO\s\+DATA\|AT\s\+END-OF-PAGE')
+    endif
+"    if cline =~? '^WHEN\>'
+"        call cursor(a:lnum,1)
+"        " We also search for READ so that contained AT ENDs are skipped
+"        let lastclause = searchpair('\c-\@<!\<\%(SEARCH\|EVALUATE\|READ\)\>','\c\<\%(WHEN\|AT\s\+END\)\>','\c\<END-\%(SEARCH\|EVALUATE\|READ\)\>','bW',s:skip)
+"        let g:foo = s:stripped(lastclause)
+"        if s:stripped(lastclause) =~? '\c\<\%(WHEN\|AT\s\+END\)\>'
+"            "&& s:stripped(lastclause) !~? '^\%(SEARCH\|EVALUATE\|READ\)\>'
+"            let ind = indent(lastclause)
+"        elseif lastclause > 0
+"            let ind = indent(lastclause) + shiftwidth()
+"        endif
+"    elseif line =~? '^WHEN\>'
+"    "   let ind = ind + shiftwidth()
+"    endif
+    "I'm not sure why I had this
+    "if line =~? '^ELSE\>-\@!' && line !~? '\.$'
+        "let ind = indent(s:prevgood(lnum))
+    "endif
+    if cline =~? '^\(END\)\>-\@!'
+        " On lines with just END, 'guess' a simple shift left
+        let ind = ind - shiftwidth()
+    elseif cline =~? '^\(END-IF\|THEN\|ELSE\)\>-\@!'
+        call cursor(a:lnum,indent(a:lnum))
+        let match = searchpair('\c-\@<!\<IF\>','\c-\@<!\%(THEN\|ELSE\)\>','\c-\@<!\<END-IF\>\zs','bnW',s:skip)
+        if match > 0
+            let ind = indent(match)
+        endif
+    elseif cline =~? '^END-[A-Z]'
+        let beginword = matchstr(cline,'\c\<END-\zs[A-Z0-9-]\+')
+        let endword = 'END-'.beginword
+        let first = 0
+        let suffix = '.*\%(\n\%(\%(\s*\|.\{6\}\)[*/].*\n\)*\)\=\s*'
+        if beginword =~? '^\%(ADD\|COMPUTE\|DIVIDE\|MULTIPLY\|SUBTRACT\)$'
+            let beginword = beginword . suffix . '\<\%(NOT\s\+\)\=ON\s\+SIZE\s\+ERROR'
+            let g:beginword = beginword
+            let first = 1
+        elseif beginword =~? '^\%(STRING\|UNSTRING\)$'
+            let beginword = beginword . suffix . '\<\%(NOT\s\+\)\=ON\s\+OVERFLOW'
+            let first = 1
+        elseif beginword =~? '^\%(ACCEPT\|DISPLAY\)$'
+            let beginword = beginword . suffix . '\<\%(NOT\s\+\)\=ON\s\+EXCEPTION'
+            let first = 1
+        elseif beginword ==? 'CALL'
+            let beginword = beginword . suffix . '\<\%(NOT\s\+\)\=ON\s\+\%(EXCEPTION\|OVERFLOW\)'
+            let first = 1
+        elseif beginword =~? '^\%(DELETE\|REWRITE\|START\|READ\|WRITE\)$'
+            let first = 1
+            let beginword = beginword . suffix . '\<\%(NOT\s\+\)\=\(INVALID\s\+KEY'
+            if beginword =~? '^READ'
+                let first = 0
+                let beginword = beginword . '\|AT\s\+END\|NO\s\+DATA'
+            elseif beginword =~? '^WRITE'
+                let beginword = beginword . '\|AT\s\+END-OF-PAGE'
+            endif
+            let beginword = beginword . '\)'
+        endif
+        call cursor(a:lnum,indent(a:lnum))
+        let match = searchpair('\c-\@<!\<'.beginword.'\>','','\c\<'.endword.'\>\zs','bnW'.(first? 'r' : ''),s:skip)
+        if match > 0
+            let ind = indent(match)
+        elseif cline =~? '^\(END-\(READ\|EVALUATE\|SEARCH\|PERFORM\)\)\>'
+            let ind = ind - shiftwidth()
+        endif
+    endif
+    return ind < bshft ? bshft : ind
+endfunction
